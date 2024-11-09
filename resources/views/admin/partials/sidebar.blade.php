@@ -27,19 +27,19 @@
             >
                 <div class="d-flex align-items-center">
                     <i class="bi bi-box-seam me-2"></i>
-                    <span>Products</span>
+                    <span>Product Management</span>
                 </div>
                 <i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="productsMenu" class="collapse">
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="bi bi-plus-circle me-2"></i> Add Product
+                    <a href="{{route('product.list')}}" class="nav-link">
+                        <i class="bi bi-plus-circle me-2"></i>Product List
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="bi bi-pencil-square me-2"></i> Edit Product
+                        <i class="bi bi-pencil-square me-2"></i>Variant List
                     </a>
                 </li>
             </ul>
