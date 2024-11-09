@@ -1,0 +1,195 @@
+/* Sidebar styles */
+.sidebar {
+    width: 250px;
+    background-color: #343a40;
+    color: #fff;
+    transition: width 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1030;
+    overflow: hidden;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+}
+.sidebar.collapsed {
+    width: 60px;
+}
+.sidebar .header {
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px;
+    background-color: #495057;
+    transition: opacity 0.3s ease-in-out;
+}
+.sidebar.collapsed .header-text {
+    display: none;
+}
+.sidebar.collapsed .header-icon {
+    display: inline-block;
+    font-size: 1.5rem;
+}
+.sidebar .nav-link {
+    font-size: 1rem;
+    padding: 10px 20px;
+    color: #adb5bd;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+.sidebar .nav-link:hover {
+    background-color: #495057;
+    color: #fff;
+}
+.sidebar .nav-link.active {
+    color: #fff;
+    background-color: #495057;
+}
+.sidebar.collapsed .nav-link span {
+    display: none;
+}
+.sidebar.collapsed .nav-link i {
+    margin-right: 0;
+}
+.content {
+    transition: margin-left 0.4s ease-in-out;
+    margin-left: 250px;
+}
+.content.collapsed {
+    margin-left: 60px;
+}
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+}
+.content {
+    margin-left: 0;
+}
+.sidebar.show {
+    width: 250px;
+}
+.content.show {
+    margin-left: 250px;
+}
+}
+
+/* Dropdown menu */
+.nav-item .collapse {
+    margin-left: 20px;
+    transition: all 0.3s ease-in-out;
+}
+.collapse:not(.show) {
+    max-height: 0;
+    overflow: hidden;
+}
+.collapse.show {
+    max-height: 500px;
+    transition: max-height 0.5s ease-in-out;
+}
+
+/* Card styles */
+.card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border: none;
+    border-radius: 10px;
+}
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+.card-icon {
+    font-size: 2rem;
+    opacity: 0.8;
+    transition: opacity 0.3s ease-in-out;
+}
+.card-icon:hover {
+    opacity: 1;
+}
+.card-gradient-primary {
+    background: linear-gradient(45deg, #007bff, #6610f2);
+    color: #fff;
+}
+.card-gradient-success {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: #fff;
+}
+.card-gradient-warning {
+    background: linear-gradient(45deg, #ffc107, #fd7e14);
+    color: #fff;
+}
+.card-gradient-danger {
+    background: linear-gradient(45deg, #dc3545, #fd7e14);
+    color: #fff;
+}
+
+
+
+
+
+#myTable .dataTables_filter input {
+    width: 300px;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#myTable .dataTables_filter label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#myTable .dataTables_filter input::placeholder {
+    color: #888;
+    font-style: italic;
+}
+
+#myTable .dataTables_length label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#myTable .dataTables_length select {
+    font-size: 14px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#myTable .dataTables_paginate .paginate_button {
+    padding: 6px 12px;
+    margin: 0 5px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+#myTable .dataTables_paginate .paginate_button:hover {
+    background-color: #0056b3;
+    color: #fff;
+}
+
+#myTable .dataTables_paginate .paginate_button.disabled {
+    background-color: #ccc;
+    color: #999;
+}
+
+#myTable.table.dataTable {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+}
+
+#myTable .dataTables_wrapper {
+    margin-top: 20px;
+    padding: 10px;
+}
+
+#myTable .table thead th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #333;
+}
+
