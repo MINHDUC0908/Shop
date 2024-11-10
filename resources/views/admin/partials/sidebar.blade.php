@@ -38,7 +38,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('variants.index' )}}" class="nav-link">
                         <i class="bi bi-pencil-square me-2"></i>Variant List
                     </a>
                 </li>

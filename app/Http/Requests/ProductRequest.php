@@ -13,7 +13,7 @@ class ProductRequest extends FormRequest
 
     public function rules()
     {
-        $productId = $this->route('id'); 
+        $productId = $this->route('id'); // If updating, get the product id from the route
 
         return [
             'product_name' => [
@@ -26,7 +26,6 @@ class ProductRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
-            'outstanding' => 'nullable|string',
         ];
     }
 
@@ -38,6 +37,7 @@ class ProductRequest extends FormRequest
             'product_name.max' => 'Tên sản phẩm không được dài quá 255 ký tự.',
             'price.required' => 'Giá sản phẩm là bắt buộc.',
             'price.numeric' => 'Giá sản phẩm phải là số.',
+            'description.required' => 'Mô tả của sản phẩm không được để trống.',
             'category_id.required' => 'Danh mục sản phẩm là bắt buộc.',
             'category_id.exists' => 'Danh mục sản phẩm không tồn tại.',
             'brand_id.required' => 'Thương hiệu sản phẩm là bắt buộc.',

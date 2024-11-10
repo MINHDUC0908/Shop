@@ -35,8 +35,8 @@
                         @endif
                     </td>
                     <td>
-                        <a href="" class="btn btn-warning btn-sm">Sửa</a>
-                        <form action="" method="POST" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')">
+                        <a href="{{ route('product.edit', ['id' => $product->id]) }}" class="btn btn-warning btn-sm">Sửa</a>
+                        <form action="{{route('product.destroy', ['id' => $product->id])}}" method="POST" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm">Xóa</button>

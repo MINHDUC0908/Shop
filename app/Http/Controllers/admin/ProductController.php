@@ -54,8 +54,6 @@ class ProductController extends Controller
             $product->description = $request->input('description');
             $product->price = $request->input('price');
             $product->outstanding = $request->input('outstanding');
-
-            // Handle product image
             if ($request->hasFile('images')) {
                 $image = $request->file('images');
                 $imageName = time() . ' - ' . $image->getClientOriginalName();
@@ -64,8 +62,6 @@ class ProductController extends Controller
             } else {
                 return back()->with('error', 'Ảnh sản phẩm là bắt buộc.');
             }
-
-            // Handle description images
             if ($request->hasFile('description_image')) {
                 $addImages = [];
                 foreach ($request->file('description_image') as $image) {
@@ -77,9 +73,9 @@ class ProductController extends Controller
             }
             $product->category_id = $request->input('category_id');
             $product->brand_id = $request->input('brand_id');
-            $product->save(); // Save the product
+            $product->save(); 
 
-            return redirect()->route('product.list')->with('success', 'Sản phẩm đã được thêm thành công.');
+            return redirect()->route('product.list')->with('status', 'Sản phẩm đã được thêm thành công.');
         } catch (Exception $e) {
             return redirect()->route('product.create')->with('error', 'Có lỗi xảy ra khi thêm sản phẩm.');
         }
@@ -94,7 +90,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return view('admin.product.show', compact('product'));
     }
 
     /**
@@ -105,7 +102,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories = Category::all();
+        $product = Product::findOrFail($id);
+        return view('admin.product.edit', compact('product', 'categories'));
     }
 
     /**
@@ -115,9 +114,67 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
-        //
+        try {
+            $product = Product::findOrFail($id);
+            if(!$product)
+            {
+                return response()->json([
+                    'error' => 'Product not found',
+                ], 404);
+            }
+            $product->product_name = $request->input('product_name');
+            $product->description = $request->input('description');
+            $product->price = $request->input('price');
+            $product->outstanding = $request->input('outstanding');
+            $product->category_id = $request->input('category_id');
+            $product->brand_id = $request->input('brand_id');
+            $product->save(); 
+            if ($request->hasFile('images'))
+            {
+                if ($product->images)
+                {
+                    $imagePath = public_path('imgProduct/' . $product->images);
+                    if (file_exists($imagePath))
+                    {
+                        unlink($imagePath);
+                    }
+                    $image = $request->file('images');
+                    $imageName = time() . ' - ' . $image->getClientOriginalName();
+                    $image->move(public_path('imgProduct'), $imageName);
+                    $product->images = $imageName;
+                }
+            }
+            if ($request->hasFile('description_image'))
+            {
+                if ($product->description_image)
+                {
+                    $description_images = json_decode($product->description_image);
+                    foreach($description_images as $image)
+                    {
+                        $imagePath = public_path('imgDescriptionProduct/' . $image);
+                        if(file_exists($imagePath))
+                        {
+                            unlink($imagePath);
+                        }
+                    }
+                    $addImages = [];
+                    foreach($request->file('description_image') as $image)
+                    {
+                        $imageName = time() . '_' . $image->getClientOriginalName();
+                        $image->move(public_path('imgDescriptionProduct'),$imageName);
+                        $addImages[] = $imageName;
+                    }
+                    $product->description_image = json_encode($addImages);
+                }
+            }
+            $product->save();
+            return redirect()->route('product.list')->with('status', 'Product updated successfully');
+        } catch (Exception $e)
+        {
+            return redirect()->route('product.list')->with('error', 'An error occurred while updating the product: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -128,7 +185,41 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $product = Product::findOrFail($id);
+            if(!$product)
+            {
+                return response()->json([
+                    'error' => 'Product not found',
+                ], 404);
+            } else {
+                if ($product->images)
+                {
+                    $imagePath = public_path('imgProduct/' . $product->images);
+                    if(file_exists($imagePath))
+                    {
+                        unlink($imagePath);
+                    }
+                }
+                if ($product->description_image)
+                {
+                    $description_images = json_decode($product->description_image);
+                    foreach($description_images as $image)
+                    {
+                        $imagePath = public_path('imgDescriptionProduct/' . $image);
+                        if (file_exists($imagePath))
+                        {
+                            unlink($imagePath);
+                        }
+                    }
+                }
+                $product->delete();
+                return redirect()->route('product.list')->with('status', 'Product deleted successfully');
+            }
+        } catch (Exception $e)
+        {
+            return redirect()->route('product.list')->with('error', 'An error occurred while deleting the product: ' . $e->getMessage());
+        }
     }
     public function getBrandsByCategory(Request $request)
     {

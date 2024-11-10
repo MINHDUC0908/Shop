@@ -15,6 +15,7 @@ class Variant extends Model
         'attribute',
         'colors',
         'price',
+        'discount_price',
         'quantity',
         'status',
     ];

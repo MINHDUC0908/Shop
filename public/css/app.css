@@ -1,3 +1,4 @@
+@import 'node_modules/toastr/build/toastr.min.css';
 /* Sidebar styles */
 .sidebar {
     width: 250px;
@@ -95,7 +96,7 @@
     border-radius: 10px;
 }
 .card:hover {
-    transform: translateY(-10px);
+    /* transform: translateY(-10px); */
     box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 .card-icon {

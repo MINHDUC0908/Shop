@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\VariantController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,4 +40,9 @@ Route::prefix('product')->name('product.')->group(function(){
     Route::get('/create', [ProductController::class, 'create'])->name('create');
     Route::post('/create', [ProductController::class, 'store'])->name('store');
     Route::get('brands/{category_id}', [ProductController::class, 'getBrandsByCategory']);
+    Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit');
+    Route::post('edit/{id}', [ProductController::class, 'update'])->name('update');
+    Route::delete('delete/{id}', [ProductController::class, 'destroy'])->name('destroy');
+    Route::get('show/{id}', [ProductController::class, 'show'])->name('show');
 });
+Route::resource('variants', VariantController::class);
