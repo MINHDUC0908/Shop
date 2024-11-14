@@ -25,7 +25,11 @@
             @foreach($variants as $variant)
             <tr>
                 <td>{{ $variant->product_name }}</td>
-                <td>{{ $variant->attribute }}</td> 
+                @if (!empty($variant->attribute))
+                    <td>{{ $variant->attribute }}</td> 
+                @else
+                    <td>N/A</td>
+                @endif
                 <td>{{ implode(', ', json_decode($variant->colors)) }}</td> 
                 <td>{{ number_format($variant->price, 2) }}₫</td> 
                 <td>

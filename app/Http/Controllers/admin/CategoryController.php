@@ -7,14 +7,25 @@ use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:index category|edit category|delete category| add category', [
+    //         'only' => ['index', 'show']
+    //     ]);
+    //     $this->middleware('permission:add category', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:edit category', ['only' => ['edit', 'update']]);
+    //     $this->middleware('permission:delete category', ['only' => ['destroy']]);
+    // }
     public function index()
     {
         try {
+            $name = Auth::user()->name;
             $categories = Category::orderBy('id', 'DESC')->get();
-            return view('admin.category.list', compact('categories'));
+            return view('admin.category.list', compact('categories', 'name'));
         } catch (Exception $e) {
             return redirect()->route('category.list')->with('error', 'Failed to fetch categories.');
         }
@@ -22,7 +33,8 @@ class CategoryController extends Controller
 
     public function create()
     {
-        return view('admin.category.add');
+        $name = Auth::user()->name;
+        return view('admin.category.add', compact('name'));
     }
 
     public function store(CategoryRequest $request)
@@ -50,8 +62,9 @@ class CategoryController extends Controller
     public function edit($id)
     {
         try {
+            $name = Auth::user()->name;
             $category = Category::findOrFail($id);
-            return view('admin.category.edit', compact('category'));
+            return view('admin.category.edit', compact('category', 'name'));
         } catch (Exception $e) {
             return redirect()->route('category.list')->with('error', 'Category not found.');
         }

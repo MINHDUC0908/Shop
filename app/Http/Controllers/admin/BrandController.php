@@ -8,18 +8,20 @@ use App\Models\Brand;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class BrandController extends Controller
 {
     public function index()
     {
         try {
+            $name = Auth::user()->name;
             $brands = Brand::join('categories', 'categories.id', '=', 'brands.category_id')
                             ->orderBy('brands.id', 'desc')
                             ->select('brands.*', 'categories.category_name as category_name')
                             ->paginate(5);
 
-            return view('admin.brand.list', compact('brands'));
+            return view('admin.brand.list', compact('brands', 'name'));
         } catch (Exception $e) {
             return redirect()->route('brand.list')->with('error', 'An error occurred while fetching brands: ' . $e->getMessage());
         }
@@ -28,8 +30,9 @@ class BrandController extends Controller
     public function create()
     {
         try {
+            $name = Auth::user()->name;
             $categories = Category::orderBy('id', 'desc')->get();
-            return view('admin.brand.add', compact('categories'));
+            return view('admin.brand.add', compact('categories', 'name'));
         } catch (Exception $e) {
             return redirect()->route('brand.list')->with('error', 'An error occurred while fetching categories: ' . $e->getMessage());
         }
@@ -61,9 +64,10 @@ class BrandController extends Controller
     public function edit($id)
     {
         try {
+            $name = Auth::user()->name;
             $brand = Brand::findOrFail($id);
             $categories = Category::orderBy('id', 'desc')->get();
-            return view('admin.brand.edit', compact('brand', 'categories'));
+            return view('admin.brand.edit', compact('brand', 'categories', 'name'));
         } catch (Exception $e) {
             return redirect()->route('brand.list')->with('error', 'An error occurred while fetching the brand for editing: ' . $e->getMessage());
         }

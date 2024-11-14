@@ -2,21 +2,18 @@
 
 @section('content')
     <div class="container mt-4">
-        <h2>Brand List</h2>
-        
         @if(session('status'))
             <div class="alert alert-success">
                 {{ session('status') }}
             </div>
         @endif
-
         <!-- Nút thêm danh mục -->
-        <div class="mb-3">
-            <a href="{{ route('brand.create') }}" class="btn btn-primary">
+        <div class="mb-3" style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="margin: 0;">Brand List</h2>
+            <a href="{{ route('brand.create') }}" class="btn btn-primary" style="margin-left: 20px;">
                 <i class="fas fa-plus"></i> Add New Brand
             </a>
-        </div>
-
+        </div> 
         <table class="table table-striped">
             <thead>
                 <tr>

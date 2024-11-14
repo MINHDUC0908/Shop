@@ -9,6 +9,12 @@
                 <i class="bi bi-speedometer2 me-2"></i> <span>Dashboard</span>
             </a>
         </li>
+        @role('Admin')
+        <li class="nav-item">
+            <a href="{{route('user.index')}}" class="nav-link">
+              <i class="bi bi-basket3 me-2"></i> <span>User</span>
+            </a>
+          </li>
         <li class="nav-item">
             <a href="{{ route('category.list') }}" class="nav-link">
                 <i class="bi bi-list-ul me-2"></i></i> <span>Categories</span>
@@ -18,7 +24,8 @@
             <a href="{{ route('brand.list') }}" class="nav-link">
                 <i class="bi bi-shop me-2"></i> <span>Brands</span>
             </a>
-        </li>        
+        </li>  
+        @endrole
         <li class="nav-item">
             <a
                 href="#productsMenu"

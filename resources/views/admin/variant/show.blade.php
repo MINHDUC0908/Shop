@@ -126,7 +126,7 @@
                         <p><strong>Brand:</strong> {{ $variant->product->brand->brand_name }}</p>
                         <p>
                             <strong>
-                                Outstanding features:
+                                Product information:
                             </strong>
                             <p>
                                 {!! html_entity_decode($variant->product->description) !!}
@@ -169,7 +169,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <strong style="font-size: 30px">
-                            Specifications:
+                            Outstanding features:
                         </strong>
                         <p>
                             {!! html_entity_decode($variant->product->outstanding) !!}
@@ -177,7 +177,7 @@
                     </div>
                     <div class="col-md-6">
                         <strong style="font-size: 30px">
-                            Product Description:
+                            Specifications:
                         </strong>
                         <p>
                             {!! html_entity_decode($variant->parameter) !!}

@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Variant;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VariantController extends Controller
 {
@@ -18,11 +19,12 @@ class VariantController extends Controller
      */
     public function index()
     {
+        $name = Auth::user()->name;
         $variants = Variant::join('products', 'products.id', '=', 'variants.product_id')
                             ->select('variants.*', 'products.product_name as product_name')
-                            ->orderBy('variants.id','DESC')
+                            ->orderBy('variants.id', 'DESC')
                             ->get();
-        return view('admin.variant.list', compact('variants'));
+        return view('admin.variant.list', compact('variants', 'name'));
     }
 
     /**
@@ -33,8 +35,9 @@ class VariantController extends Controller
     public function create()
     {
         try {
+            $name = Auth::user()->name;
             $products = Product::orderBy('id', 'desc')->get();
-            return view('admin.variant.add', compact('products'));
+            return view('admin.variant.add', compact('products', 'name'));
         } catch (Exception $e) {
             return redirect()->route('admin.variant.list')->with('error', 'An error occurred while fetching products: ' . $e->getMessage());
         }
@@ -43,7 +46,7 @@ class VariantController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\VariantRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(VariantRequest $request)
@@ -59,18 +62,13 @@ class VariantController extends Controller
             $variant->colors = json_encode($colors); 
             $variant->discount_price = $request->input('discount_price');
             $variant->quantity = $request->input('quantity');
-            if ($request->input('quantity') > 0) {
-                $variant->status = 'available';
-            } else {
-                $variant->status = 'out_of_stock';
-            }
+            $variant->status = $request->input('quantity') > 0 ? 'available' : 'out_of_stock';
             $variant->save();
             return redirect()->route('variants.index')->with('status', 'Variant added successfully');
         } catch (Exception $e) {
             return redirect()->route('variants.index')->with('error', 'An error occurred while adding the variant: ' . $e->getMessage());
         }
     }
-
 
     /**
      * Display the specified resource.
@@ -92,7 +90,10 @@ class VariantController extends Controller
      */
     public function edit($id)
     {
-        //
+        $name = Auth::user()->name;
+        $variant = Variant::findOrFail($id);
+        $products = Product::orderBy('id', 'desc')->get();
+        return view('admin.variant.edit', compact('variant', 'products', 'name'));
     }
 
     /**
@@ -102,9 +103,25 @@ class VariantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(VariantRequest $request, $id)
     {
-        //
+        try {
+            $variant = Variant::findOrFail($id);
+            $variant->product_id = $request->input('product_id');
+            $variant->parameter = $request->input('parameter');
+            $variant->attribute = $request->input('attribute');
+            $variant->price = $request->input('price');
+            $colors = explode(',', $request->input('colors'));
+            $colors = array_map('trim', $colors); 
+            $variant->colors = json_encode($colors); 
+            $variant->discount_price = $request->input('discount_price');
+            $variant->quantity = $request->input('quantity');
+            $variant->status = $request->input('quantity') > 0 ? 'available' : 'out_of_stock';
+            $variant->save();
+            return redirect()->route('variants.index')->with('status', 'Variant updated successfully');
+        } catch (Exception $e) {
+            return redirect()->route('variants.index')->with('error', 'An error occurred while updating the variant: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -115,6 +132,12 @@ class VariantController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $variant = Variant::findOrFail($id);
+            $variant->delete();
+            return redirect()->route('variants.index')->with('status', 'Variant deleted successfully');
+        } catch (Exception $e) {
+            return redirect()->route('variants.index')->with('error', 'An error occurred while deleting the variant: ' . $e->getMessage());
+        }
     }
 }

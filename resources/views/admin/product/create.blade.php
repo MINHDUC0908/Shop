@@ -15,7 +15,7 @@
         </div>
 
         <div class="form-group">
-            <label for="description">Mô tả</label>
+            <label for="description">Outstanding features</label>
             <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ old('description') }}</textarea>
             @error('description')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -23,7 +23,7 @@
         </div>
 
         <div class="form-group">
-            <label for="outstanding">Nổi bật</label>
+            <label for="outstanding">Tính năng nổi bật</label>
             <textarea class="form-control @error('outstanding') is-invalid @enderror" id="outstanding" name="outstanding" rows="3">{{ old('outstanding') }}</textarea>
             @error('outstanding')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -97,26 +97,30 @@
                 reader.readAsDataURL(file);
             }
         }
-
         // Xem trước ảnh mô tả
         function previewDescriptionImage() {
             var preview = document.getElementById('description-image-preview');
             preview.innerHTML = ""; // Clear previous previews
 
-            var file = document.getElementById('description_image').files[0];
-            if (file) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    var img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.height = '100px';
-                    img.style.margin = '5px';
-                    preview.appendChild(img);
+            var files = document.getElementById('description_image').files;
+            
+            // Lặp qua tất cả các file và tạo preview cho mỗi ảnh
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.height = '100px';
+                        img.style.margin = '5px';
+                        preview.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
                 }
-                reader.readAsDataURL(file);
             }
         }
-
         document.addEventListener("DOMContentLoaded", function() {
             fetchBrands();
         });

@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Input\Input;
 
 class ProductController extends Controller
@@ -20,12 +21,13 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $name = Auth::user()->name;
         $products = Product::join('categories', 'categories.id', '=', 'products.category_id')
                     ->join('brands', 'brands.id', '=', 'products.brand_id')
                     ->orderBy('products.updated_at', 'DESC')
                     ->select('products.*', 'categories.category_name', 'brands.brand_name')
                     ->get();
-        return view('admin.product.list', compact('products'));
+        return view('admin.product.list', compact('products', 'name'));
     }
 
     /**
@@ -37,7 +39,8 @@ class ProductController extends Controller
     {   
         $categories = Category::all();
         $brands = Brand::all();
-        return view('admin.product.create', compact('categories', 'brands'));
+        $name = Auth::user()->name;
+        return view('admin.product.create', compact('categories', 'brands', 'name'));
     }
 
     /**
@@ -102,9 +105,10 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $name = Auth::user()->name;
         $categories = Category::all();
         $product = Product::findOrFail($id);
-        return view('admin.product.edit', compact('product', 'categories'));
+        return view('admin.product.edit', compact('product', 'categories', 'name'));
     }
 
     /**

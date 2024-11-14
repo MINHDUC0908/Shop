@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +27,4 @@ Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('showC
 // Routes cho Brand
 Route::get('/brands', [BrandController::class, 'index'])->name('indexBrand');
 Route::get('/brands/{id}', [BrandController::class, 'show'])->name('showBrand');
+Route::get('product', [ProductController::class, 'index'])->name('Product');

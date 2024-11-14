@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
-
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class VariantRequest extends FormRequest
@@ -29,7 +29,12 @@ class VariantRequest extends FormRequest
             'colors' => 'required|string',
             'price' => 'required|numeric|min:0', 
             'quantity' => 'required|integer|min:0',
-            'attribute' => 'required|string|max:255|unique:variants,attribute,NULL,id,product_id,' . $this->product_id,
+            'attribute' => [
+                'max:255',
+                Rule::unique('variants')->where(function ($query) {
+                    return $query->where('product_id', $this->product_id);
+                })->ignore($this->variant),
+            ],
         ];
     }
     public function messages()
@@ -48,7 +53,6 @@ class VariantRequest extends FormRequest
             'quantity.required' => 'Số lượng là bắt buộc.',
             'quantity.integer' => 'Số lượng phải là số nguyên.',
             'quantity.min' => 'Số lượng không thể nhỏ hơn 0.',
-            'attribute.required' => 'Thuộc tính không được để trống',
             'attribute.unique' => 'Kết hợp sản phẩm và thuộc tính này đã tồn tại.',
         ];
     }

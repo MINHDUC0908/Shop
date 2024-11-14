@@ -6,7 +6,9 @@ namespace Database\Seeders;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,7 +25,16 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        Category::factory()->count(10)->create();
-        Brand::factory()->count(10)->create();
+        // Category::factory()->count(10)->create();
+        // Brand::factory()->count(10)->create();
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'ducle090891999@gmail.com',
+            'password' => Hash::make('duc0908@@', [
+                'memory' => 1024,    // Tùy chọn bộ nhớ (giới hạn 1024MB)
+                'time' => 2,         // Thời gian (số vòng lặp)
+                'threads' => 2       // Số lượng luồng (threads)
+            ])
+        ]);
     }
 }

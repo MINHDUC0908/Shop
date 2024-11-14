@@ -12,13 +12,13 @@
     @endif
     <div class="ms-auto dropdown">
         <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Account
+            {{$name}}
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="#">Profile</a></li>
             <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#">Logout</a></li>
+            <li><a class="dropdown-item" href="{{route('logout')}}">Logout</a></li>
         </ul>
     </div>
 </nav>

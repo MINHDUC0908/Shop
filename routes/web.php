@@ -5,6 +5,8 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\VariantController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,3 +48,19 @@ Route::prefix('product')->name('product.')->group(function(){
     Route::get('show/{id}', [ProductController::class, 'show'])->name('show');
 });
 Route::resource('variants', VariantController::class);
+Route::group(['middleware' => ['guest']], function(){
+    Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [LoginController::class, 'login']);  
+});
+Route::group(['middleware' => ['auth', 'role:Admin']], function () {
+    Route::resource('user', UserController::class);
+});
+Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('phan-vai-tro/{id}', [UserController::class, 'phanvaitro'])->name('phan-vai-tro');
+Route::post('storeRole/{id}', [UserController::class, 'storeRole'])->name('storeRole');
+Route::get('phan-quyen/{id}', [UserController::class, 'phanquyen'])->name('phan-quyen');
+Route::post('storePermission/{id}', [UserController::class, 'storePermission'])->name('storePermission');
+Route::get('add-role', [UserController::class, 'createRole'])->name('add-quyen');
+Route::post('storeRoles', [UserController::class, 'storeRoles'])->name('storeRoles');
+Route::get('add-permissions', [UserController::class, 'createPermission'])->name('add-permission');
+Route::post('Permissions', [UserController::class, 'Permissions'])->name('Permission');
